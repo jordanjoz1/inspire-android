@@ -1,6 +1,7 @@
 package com.jozapps.inspire.alarm;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import com.jozapps.inspire.R;
 import com.jozapps.inspire.dao.QuoteDAO;
 import com.jozapps.inspire.model.Quote;
+import com.jozapps.inspire.views.MainActivity;
 
 public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteListener {
 
@@ -27,17 +29,19 @@ public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteLi
                 (NotificationManager) pContext.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-
     @Override
     public void onTodayQuoteReceived(Quote quote) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, new Intent
+                        (mContext, MainActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(quote.getText()))
                 .setSmallIcon(R.drawable.ic_notif).setContentTitle(String.format(mContext
                         .getResources().getString(R.string.notification_title), quote
                         .getAuthor()))
-                .setContentText(quote.getText());
-        //TODO set pending intent to open main fragment
+                .setContentText(quote.getText())
+                .setContentIntent(pendingIntent);
         mNotificationManager.notify(0, notificationBuilder.build());
         mQuoteDAO.removeListener(this);
     }

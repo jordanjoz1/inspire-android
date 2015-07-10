@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -17,6 +20,7 @@ import com.jozapps.inspire.alarm.AlarmService;
 import com.jozapps.inspire.dao.QuoteDAO;
 import com.jozapps.inspire.model.Quote;
 import com.jozapps.inspire.util.ColorUtils;
+import com.jozapps.inspire.util.DateUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,6 +28,8 @@ import butterknife.InjectView;
 
 public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
 
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     @InjectView(R.id.main_background)
     RelativeLayout mainLayout;
     @InjectView(R.id.main_quote)
@@ -76,6 +82,19 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
     }
 
     private void initViews() {
+        toolbar.inflateMenu(R.menu.menu_alarm);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_alarm:
+                        DialogFragment newFragment = new TimePickerFragment();
+                        newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
 
@@ -83,14 +102,14 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
         if (mQuote != null) {
             titleTextView.setText(mQuote.getText());
             descriptionTextView.setText(mQuote.getAuthor());
-
-//            int colorRes = ColorUtils.getRandomColorRes(getActivity(), DateUtils
-//                    .getDateAsGMTMidnight
-//                            ().getTime());
-//            int accentColor = ColorUtils.getRandomAccentColor(getActivity(), colorRes, DateUtils
-//                    .getDateAsGMTMidnight().getTime());
-            int colorRes = ColorUtils.getRandomColorRes(getActivity(), System.currentTimeMillis());
-            int accentColor = ColorUtils.getRandomColorRes(getActivity(), colorRes);
+            int colorRes = ColorUtils.getRandomColorRes(getActivity(), DateUtils
+                    .getDateAsGMTMidnight
+                            ().getTime());
+            int accentColor = ColorUtils.getRandomAccentColor(getActivity(), colorRes, DateUtils
+                    .getDateAsGMTMidnight().getTime());
+//            int colorRes = ColorUtils.getRandomColorRes(getActivity(), System.currentTimeMillis
+// ());
+//            int accentColor = ColorUtils.getRandomColorRes(getActivity(), colorRes);
 
             int whiteBlackColor = ColorUtils.getWhiteBlackAccent(getActivity(), colorRes);
             mainLayout.setBackgroundColor(colorRes);

@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.jozapps.inspire.model.AlarmTime;
 import com.jozapps.inspire.util.DateUtils;
+import com.jozapps.inspire.util.LocalStorage;
 
 import java.util.Calendar;
 
@@ -20,14 +22,17 @@ public class AlarmService {
     }
 
     public void startAlarm() {
-        Calendar start = DateUtils.createCalendarAtTimeToday(0, 0, 10);
+        AlarmTime alarmTime = new LocalStorage(context).getAlarmTime();
+        Calendar start = DateUtils.createCalendarAtTimeToday(0, alarmTime.getMinute(), alarmTime
+                .getHour());
+        // make sure alarm starts in the future
         Calendar now = DateUtils.createCalendarNow();
         if (start.before(now)) {
             start.add(Calendar.HOUR, 24);
         }
         long firstTime = start.getTimeInMillis();
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC, firstTime, AlarmManager.INTERVAL_HOUR * 3,
+        am.setRepeating(AlarmManager.RTC, firstTime, AlarmManager.INTERVAL_DAY,
                 mAlarmSender);
     }
 }
