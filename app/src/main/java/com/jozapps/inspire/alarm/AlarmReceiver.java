@@ -41,6 +41,7 @@ public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteLi
                         .getResources().getString(R.string.notification_title), quote
                         .getAuthor()))
                 .setContentText(quote.getText())
+                .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
         mNotificationManager.notify(0, notificationBuilder.build());
         mQuoteDAO.removeListener(this);
