@@ -1,6 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file("${keystore}")
+            storePassword "${keystore_password}"
+            keyAlias "${key_alias}"
+            keyPassword "${key_password}"
+        }
+    }
+
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
@@ -10,6 +20,7 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
