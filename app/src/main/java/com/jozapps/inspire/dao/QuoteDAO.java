@@ -17,7 +17,6 @@ public class QuoteDAO {
         void onTodayQuoteReceived(Quote quote);
     }
 
-    // Listeners to notify when the set changes.
     private List<QuoteListener> listeners = new ArrayList<>();
 
     public void addListener(QuoteListener listener) {

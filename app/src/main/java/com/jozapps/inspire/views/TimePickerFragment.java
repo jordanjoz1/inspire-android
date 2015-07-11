@@ -14,6 +14,8 @@ import com.jozapps.inspire.util.LocalStorage;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
+    public static final String TAG = "timePicker";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlarmTime alarmTime = new LocalStorage(getActivity()).getAlarmTime();

@@ -20,7 +20,6 @@ import com.jozapps.inspire.alarm.AlarmService;
 import com.jozapps.inspire.dao.QuoteDAO;
 import com.jozapps.inspire.model.Quote;
 import com.jozapps.inspire.util.ColorUtils;
-import com.jozapps.inspire.util.DateUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -89,7 +88,8 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
                 switch (item.getItemId()) {
                     case R.id.menu_alarm:
                         DialogFragment newFragment = new TimePickerFragment();
-                        newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+                        newFragment.show(getActivity().getSupportFragmentManager(),
+                                TimePickerFragment.TAG);
                         break;
                 }
                 return true;
@@ -102,15 +102,8 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
         if (mQuote != null) {
             titleTextView.setText(mQuote.getText());
             descriptionTextView.setText(mQuote.getAuthor());
-            int colorRes = ColorUtils.getRandomColorRes(getActivity(), DateUtils
-                    .getDateAsGMTMidnight
-                            ().getTime());
-            int accentColor = ColorUtils.getRandomAccentColor(getActivity(), colorRes, DateUtils
-                    .getDateAsGMTMidnight().getTime());
-//            int colorRes = ColorUtils.getRandomColorRes(getActivity(), System.currentTimeMillis
-// ());
-//            int accentColor = ColorUtils.getRandomColorRes(getActivity(), colorRes);
-
+            int colorRes = ColorUtils.getTodayColor(getActivity());
+            int accentColor = ColorUtils.getTodayAccentColor(getActivity());
             int whiteBlackColor = ColorUtils.getWhiteBlackAccent(getActivity(), colorRes);
             mainLayout.setBackgroundColor(colorRes);
             titleTextView.setTextColor(whiteBlackColor);
@@ -134,7 +127,6 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
             return;
         }
 
-        // create share intent
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, String.format(getResources().getString(R.string

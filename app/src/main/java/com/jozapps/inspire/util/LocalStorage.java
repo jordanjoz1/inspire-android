@@ -10,11 +10,9 @@ public class LocalStorage {
     private static final String KEY_HOUR = "HourPref";
     private static final String KEY_MINUTE = "MinutePref";
 
-    private Context mContext;
     private SharedPreferences mSettings;
 
     public LocalStorage(Context context) {
-        this.mContext = context;
         mSettings = context.getSharedPreferences(PREFS_NAME, 0);
     }
 
