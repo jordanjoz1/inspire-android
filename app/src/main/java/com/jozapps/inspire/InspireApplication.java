@@ -19,7 +19,9 @@ public class InspireApplication extends Application {
         Parse.enableLocalDatastore(this);
 
         // Enable Crash Reporting
-        ParseCrashReporting.enable(this);
+        if (!BuildConfig.DEBUG) {
+            ParseCrashReporting.enable(this);
+        }
 
         Parse.initialize(this, KeyHelper.getParseApplicationId(this), KeyHelper.getParseClientKey
                 (this));
