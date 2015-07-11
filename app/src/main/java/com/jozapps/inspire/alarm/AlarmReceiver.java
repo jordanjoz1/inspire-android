@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import com.jozapps.inspire.R;
 import com.jozapps.inspire.dao.QuoteDAO;
 import com.jozapps.inspire.model.Quote;
+import com.jozapps.inspire.util.ColorUtils;
 import com.jozapps.inspire.views.MainActivity;
 
 public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteListener {
@@ -41,6 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteLi
                         .getResources().getString(R.string.notification_title), quote
                         .getAuthor()))
                 .setContentText(quote.getText())
+                .setColor(ColorUtils.getTodayColor(mContext))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
         mNotificationManager.notify(0, notificationBuilder.build());
