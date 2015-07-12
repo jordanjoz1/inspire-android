@@ -18,8 +18,10 @@ import android.widget.TextView;
 import com.jozapps.inspire.R;
 import com.jozapps.inspire.alarm.AlarmService;
 import com.jozapps.inspire.dao.QuoteDAO;
+import com.jozapps.inspire.metrics.TrackerConstants;
 import com.jozapps.inspire.model.Quote;
 import com.jozapps.inspire.util.ColorUtils;
+import com.parse.ParseAnalytics;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -60,6 +62,7 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
     @Override
     public void onResume() {
         super.onResume();
+        ParseAnalytics.trackAppOpenedInBackground(getActivity().getIntent());
         mQuoteDAO.getQuoteToday();
         mQuoteDAO.getUpcoming();
         mQuoteDAO.clearOldCache();
@@ -127,6 +130,7 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
             return;
         }
 
+        trackShareAction();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, String.format(getResources().getString(R.string
@@ -141,5 +145,9 @@ public class MainFragment extends Fragment implements QuoteDAO.QuoteListener {
     public void onTodayQuoteReceived(Quote quote) {
         mQuote = quote;
         updateViews();
+    }
+
+    private void trackShareAction() {
+        ParseAnalytics.trackEventInBackground(TrackerConstants.SHARE_ACTION);
     }
 }

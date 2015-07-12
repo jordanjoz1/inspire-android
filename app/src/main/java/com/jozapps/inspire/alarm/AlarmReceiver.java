@@ -32,8 +32,8 @@ public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteLi
 
     @Override
     public void onTodayQuoteReceived(Quote quote) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, new Intent
-                        (mContext, MainActivity.class),
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, MainActivity
+                        .newIntentForNotification(mContext),
                 PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setStyle(new NotificationCompat.BigTextStyle()
