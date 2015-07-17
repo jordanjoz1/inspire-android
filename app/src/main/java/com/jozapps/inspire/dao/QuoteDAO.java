@@ -54,6 +54,7 @@ public class QuoteDAO {
     public void getQuoteToday() {
         final ParseQuery<Quote> query = ParseQuery.getQuery(Quote.class);
         query.orderByAscending(Quote.DISPLAY_DATE);
+        query.whereGreaterThanOrEqualTo(Quote.DISPLAY_DATE, DateUtils.getDateAsGMTMidnight());
         query.fromLocalDatastore();
         query.getFirstInBackground(new GetCallback<Quote>() {
             @Override
