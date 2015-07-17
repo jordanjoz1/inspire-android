@@ -17,6 +17,7 @@ public class QuoteDAO {
         void onTodayQuoteReceived(Quote quote);
     }
 
+    private static final int MAX_QUOTES_TO_CACHE = 14;
     private List<QuoteListener> listeners = new ArrayList<>();
 
     public void addListener(QuoteListener listener) {
@@ -30,6 +31,7 @@ public class QuoteDAO {
     public void getUpcoming() {
         final ParseQuery<Quote> query = ParseQuery.getQuery(Quote.class);
         query.whereGreaterThanOrEqualTo(Quote.DISPLAY_DATE, DateUtils.getDateAsGMTMidnight());
+        query.setLimit(MAX_QUOTES_TO_CACHE);
         query.findInBackground(new FindCallback<Quote>() {
             @Override
             public void done(List<Quote> quotes, ParseException e) {
