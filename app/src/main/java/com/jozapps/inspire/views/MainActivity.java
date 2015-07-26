@@ -17,6 +17,7 @@ public class MainActivity extends ActionBarActivity {
     public static Intent newIntentForNotification(Context context) {
         Intent intent = new Intent
                 (context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(ARG_NOTIF, true);
         return intent;
     }
