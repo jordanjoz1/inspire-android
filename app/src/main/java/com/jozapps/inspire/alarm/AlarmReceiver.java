@@ -35,6 +35,15 @@ public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteLi
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, MainActivity
                         .newIntentForNotification(mContext),
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // get dark color for notification icon
+        int notifColor;
+        if (ColorUtils.isColorDark(ColorUtils.getTodayColor(mContext))) {
+            notifColor = ColorUtils.getTodayColor(mContext);
+        } else {
+            notifColor = ColorUtils.getTodayAccentColor(mContext);
+        }
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(quote.getText()))
@@ -42,7 +51,7 @@ public class AlarmReceiver extends BroadcastReceiver implements QuoteDAO.QuoteLi
                         .getResources().getString(R.string.notification_title), quote
                         .getAuthor()))
                 .setContentText(quote.getText())
-                .setColor(ColorUtils.getTodayColor(mContext))
+                .setColor(notifColor)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
         mNotificationManager.notify(0, notificationBuilder.build());
