@@ -23,9 +23,9 @@ public class InspireApplication extends Application {
             ParseCrashReporting.enable(this);
         }
 
+        ParseObject.registerSubclass(Quote.class);
         Parse.initialize(this, KeyHelper.getParseApplicationId(this), KeyHelper.getParseClientKey
                 (this));
-        ParseObject.registerSubclass(Quote.class);
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 }
